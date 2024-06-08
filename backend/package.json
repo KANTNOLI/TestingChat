@@ -13,6 +13,8 @@
     "bcrypt": "^5.1.1",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
-    "pg-promise": "^11.8.0"
-  }
+    "pg-promise": "^11.8.0",
+    "socket.io": "^4.7.5"
+  },
+  "type": "module"
 }

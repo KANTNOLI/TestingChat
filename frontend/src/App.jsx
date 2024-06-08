@@ -1,35 +1,53 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react'
+import io from 'socket.io-client';
 import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
 
+
+  const [messages, setMessages] = useState([]);
+  const [messageInput, setMessageInput] = useState('');
+  const socket = io();
+
+  useEffect(() => {
+    // Подписываемся на событие 'message' при монтировании компонента
+    socket.on('message', (message) => {
+      setMessages((prevMessages) => [...prevMessages, message]);
+    });
+
+    // Отписываемся от события при размонтировании компонента
+    return () => {
+      socket.off('message');
+    };
+  }, []); // Зависимость пуста, так что useEffect вызывается только один раз при монтировании
+
+  const handleMessageSubmit = (event) => {
+    event.preventDefault();
+    if (messageInput.trim() !== '') {
+      socket.emit('message', messageInput);
+      setMessageInput('');
+    }
+  };
+
   return (
-    <>
+    <div>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        {messages.map((message, index) => (
+          <div key={index}>{message}</div>
+        ))}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+      <form onSubmit={handleMessageSubmit}>
+        <input
+          type="text"
+          value={messageInput}
+          onChange={(e) => setMessageInput(e.target.value)}
+          placeholder="Введите ваше сообщение"
+        />
+        <button type="submit">Отправить</button>
+      </form>
+    </div>
+  );
+};
 
 export default App
