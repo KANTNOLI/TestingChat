@@ -1,53 +1,41 @@
-import { useEffect, useState } from 'react'
 import io from 'socket.io-client';
 import './App.css'
+import { useEffect, useState } from 'react';
+
+const socket = io.connect("http://localhost:3001")
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const [data, setData] = useState([''])
+  const [input, setInput] = useState('')
 
 
-  const [messages, setMessages] = useState([]);
-  const [messageInput, setMessageInput] = useState('');
-  const socket = io();
 
   useEffect(() => {
-    // Подписываемся на событие 'message' при монтировании компонента
-    socket.on('message', (message) => {
-      setMessages((prevMessages) => [...prevMessages, message]);
-    });
+    socket.on("give", (data) => {
+      setData(data)
+    })
+  }, [socket])
 
-    // Отписываемся от события при размонтировании компонента
-    return () => {
-      socket.off('message');
-    };
-  }, []); // Зависимость пуста, так что useEffect вызывается только один раз при монтировании
+  const send = () => {
+    socket.emit("send", [...data, input])
+  }
 
-  const handleMessageSubmit = (event) => {
-    event.preventDefault();
-    if (messageInput.trim() !== '') {
-      socket.emit('message', messageInput);
-      setMessageInput('');
-    }
-  };
+  function a(event) {
+    setInput(event.target.value)
+  }
 
   return (
     <div>
-      <div>
-        {messages.map((message, index) => (
-          <div key={index}>{message}</div>
-        ))}
-      </div>
-      <form onSubmit={handleMessageSubmit}>
-        <input
-          type="text"
-          value={messageInput}
-          onChange={(e) => setMessageInput(e.target.value)}
-          placeholder="Введите ваше сообщение"
-        />
-        <button type="submit">Отправить</button>
-      </form>
-    </div>
+      {
+        data.map((messeage, id) => (
+          <p key={id}>{messeage}</p>
+        ))
+      }
+      <input value={input} onChange={() => a(event)} type="text" placeholder='mass' />
+      <button onClick={() => send()}>send</button>
+    </div >
   );
-};
+}
 
 export default App
