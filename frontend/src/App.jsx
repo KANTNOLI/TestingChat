@@ -1,4 +1,5 @@
 import io from 'socket.io-client';
+import axios from "axios"
 import './App.css'
 import { useEffect, useState } from 'react';
 
@@ -6,7 +7,9 @@ const socket = io.connect("http://localhost:3001")
 
 function App() {
 
+  const [rooms, setRooms] = useState(0)
 
+  
   const [input, setInput] = useState('')
   let name = `Name${Math.random() * (100 - 0) + 0}`;
   let room = "room1"
@@ -22,6 +25,8 @@ function App() {
   }
 
 
+
+
   useEffect(() => {
     socket.on("join", (props) => {
       data ?
@@ -33,6 +38,14 @@ function App() {
       data ?
         setData([...data, props]) : setData(props)
     })
+
+
+    axios.get('http://localhost:5001/api2')
+    .then(function (response) {
+      setRooms(response.data)
+      console.log(response.data);
+    })
+
   }, [socket])
 
   const send = () => {

@@ -55,12 +55,15 @@ dbApp.listen(dbPort, async () => {
   console.log(`Сервер запущен! Путь ${localIP}:${dbPort}`);
 });
 
-dbApp.get("/api1", (error, req) => {
-  bd.query("SELECT * FROM users").then((data) => req.status(200).json(data));
+dbApp.get("/api1", (req, res) => {
+  bd.query("SELECT * FROM users")
+    .then((data) => res.status(200).json(data))
+    .catch((error) => res.status(500).json({ error: error.message }));
 });
 
-dbApp.get("/api2", (res, req) => {
-  console.log(res.body);
-  bd.query("SELECT * FROM messages").then((data) => req.status(200).json(data));
+dbApp.get("/api2", (req, res) => {
+  bd.query("SELECT * FROM messages")
+    .then((data) => res.status(200).json(data))
+    .catch((error) => res.status(500).json({ error: error.message }));
 });
 //Работа с Базой данных
