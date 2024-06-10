@@ -9,7 +9,7 @@ function App() {
 
   const [rooms, setRooms] = useState(0)
 
-  
+
   const [input, setInput] = useState('')
   let name = `Name${Math.random() * (100 - 0) + 0}`;
   let room = "room1"
@@ -44,7 +44,10 @@ function App() {
     .then(function (response) {
       setRooms(response.data)
       console.log(response.data);
-    })
+    })    
+
+
+     
 
   }, [socket])
 
