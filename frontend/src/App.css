@@ -94,9 +94,15 @@
   left: 20px;
   border-radius: 10px;
   width: max-content;
-  background-color: rgba(0, 166, 255, 0.61);
+  background-color: rgba(60, 60, 60, 0.61);
 }
 
+.test {
+  left: 19px;
+  top: 10px;
+  position: absolute;
+
+}
 
 .messeage2 {
   padding: 5px;
@@ -107,14 +113,14 @@
   background-color: rgba(0, 166, 255, 0.61);
 }
 
-input{
+input {
   left: 44%;
   top: 400px;
   position: absolute;
 }
 
 
-.send{
+.send {
   left: 50%;
   top: 450px;
   position: absolute;
