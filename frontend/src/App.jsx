@@ -3,17 +3,11 @@ import axios from "axios"
 import './App.css'
 import { useEffect, useState } from 'react';  
 
-
-
-
-
-
 const socket = io.connect("http://localhost:3001")
 
 function App() {
 
   const [rooms, setRooms] = useState(0)
-
 
   const [input, setInput] = useState('')
   let name = `Name${Math.random() * (100 - 0) + 0}`;
@@ -48,8 +42,6 @@ function App() {
       console.log(response.data);
     })    
 
-
-     
 
   }, [socket])
 
