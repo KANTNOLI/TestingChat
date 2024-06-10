@@ -1,29 +1,66 @@
 import express from "express";
-import pgPromise from "pg-promise";
+import pg from "pg-promise";
 import http from "http";
 import { Server } from "socket.io";
 import cors from "cors";
+import os from "os";
+
+const localIP = Object.values(os.networkInterfaces())
+  .flat()
+  .find((iface) => iface.family === "IPv4" && !iface.internal)?.address;
 
 const app = express();
-const pgp = pgPromise();
+const dbApp = express();
+
+const socketPort = process.env.PORT || 3001;
+const dbPort = process.env.PORT || 5001;
+const bd = pg()({
+  user: "postgres",
+  host: "localhost",
+  database: "postgres",
+  password: "5432",
+  port: 5432,
+});
 
 app.use(cors());
 const server = http.createServer(app);
 
+//Работа с сокетами
 const io = new Server(server, {
   cors: {
     origin: "*",
     methods: ["GET", "POST"],
   },
 });
-
 io.on("connection", (socket) => {
+  socket.on("join", (props) => {
+    socket.join(props.room);
+    io.to(props.room).emit("send", `Join ${props.name}`);
+    console.log(props.room + " " + props.name);
+  });
+
   socket.on("send", (data) => {
-    console.log(data);
-    socket.broadcast.emit("give", data);
+    socket.to(data.room).emit("give", JSON.parse(data.data));
+    console.log(data.room + " mess " + data.data);
   });
 });
-
-server.listen(3001, () => {
-  console.log("Ready 3001");
+server.listen(socketPort, () => {
+  console.log(`Сервер запущен! Путь ${localIP}:${socketPort}`);
 });
+//Работа с сокетами
+
+
+//Работа с Базой данных
+dbApp.listen(dbPort, async () => {
+  console.log(`Сервер запущен! Путь ${localIP}:${dbPort}`);
+});
+
+dbApp.get("/api1", (error, req) => {
+  bd.query("SELECT * FROM users").then((data) => req.status(200).json(data));
+});
+
+dbApp.get("/api2", (res, req) => {
+  console.log(res.body);
+  bd.query("SELECT * FROM messages").then((data) => req.status(200).json(data));
+});
+//Работа с Базой данных

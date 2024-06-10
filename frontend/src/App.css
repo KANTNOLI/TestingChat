@@ -11,9 +11,11 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -22,6 +24,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -39,4 +42,80 @@
 
 .read-the-docs {
   color: #888;
+}
+
+
+.a {
+  border: 2px solid black;
+  display: flex;
+  width: 800px;
+  height: 300px;
+  background-color: rgb(63, 63, 63);
+}
+
+.chats {
+  width: 200px;
+  height: 100%;
+  border-right: 2px solid black;
+  background-color: rgb(93, 93, 93);
+
+}
+
+.chat {
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+  margin-top: 10px;
+  width: 100%;
+  height: 50px;
+  background-color: red;
+}
+
+.chat:first-child {
+  border-top: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.content {
+  position: relative;
+  overflow-x: hidden;
+  width: 100%;
+  height: 100%;
+  background-color: #cacaca;
+}
+
+.content div {
+  margin-top: 10px;
+}
+
+.messeage1 {
+  position: relative;
+  padding: 5px;
+  left: 20px;
+  border-radius: 10px;
+  width: max-content;
+  background-color: rgba(0, 166, 255, 0.61);
+}
+
+
+.messeage2 {
+  padding: 5px;
+  position: relative;
+  left: 400px;
+  border-radius: 10px;
+  width: max-content;
+  background-color: rgba(0, 166, 255, 0.61);
+}
+
+input{
+  left: 44%;
+  top: 400px;
+  position: absolute;
+}
+
+
+.send{
+  left: 50%;
+  top: 450px;
+  position: absolute;
 }
