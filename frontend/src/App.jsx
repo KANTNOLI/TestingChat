@@ -1,7 +1,12 @@
 import io from 'socket.io-client';
 import axios from "axios"
 import './App.css'
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';  
+
+
+
+
+
 
 const socket = io.connect("http://localhost:3001")
 
@@ -23,9 +28,6 @@ function App() {
       messeage: `Зашел ${name}`,
     })
   }
-
-
-
 
   useEffect(() => {
     socket.on("join", (props) => {
